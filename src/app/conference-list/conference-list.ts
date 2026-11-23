@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { DatePipe, NgClass, UpperCasePipe } from '@angular/common';
+import { DatePipe, UpperCasePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ConferenceDetails } from '../conference-details/conference-details';
 
 export interface Conference {
   id: number;
@@ -14,12 +15,13 @@ export interface Conference {
 
 @Component({
   selector: 'app-conference-list',
-  imports: [FormsModule, UpperCasePipe, DatePipe, NgClass],
+  imports: [FormsModule, UpperCasePipe, DatePipe, ConferenceDetails],
   templateUrl: './conference-list.html',
   styleUrl: './conference-list.css',
 })
 export class ConferenceList {
   searchText = '';
+  selectedConference: Conference | null = null;
 
   conferences: Conference[] = [
     {
@@ -60,7 +62,6 @@ export class ConferenceList {
     },
   ];
 
-  // Conférences à venir + filtre de recherche sur le titre
   get filteredConferences(): Conference[] {
     const today = new Date();
     const search = this.searchText.trim().toLowerCase();
@@ -72,6 +73,10 @@ export class ConferenceList {
 
   remainingPlaces(c: Conference): number {
     return c.maxParticipants - c.nbParticipants;
+  }
+
+  select(c: Conference) {
+    this.selectedConference = c;
   }
 
   register(c: Conference) {

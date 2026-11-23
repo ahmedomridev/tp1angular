@@ -12,21 +12,27 @@
   } @else {
     <div class="grid">
       @for (c of filteredConferences; track c.id) {
-        <article class="conference-card">
+        <article
+          class="conference-card"
+          [class.selected]="selectedConference?.id === c.id"
+          (click)="select(c)"
+        >
           <h3>{{ c.title | uppercase }}</h3>
-          <p>{{ c.description }}</p>
           <p>📅 {{ c.date | date: 'dd MMMM yyyy' }}</p>
           <p>📍 {{ c.place }}</p>
           <p>
             Participants : {{ c.nbParticipants }} / {{ c.maxParticipants }}
             ({{ remainingPlaces(c) }} places restantes)
           </p>
-
-          <button class="btn"
-          [ngClass]="{ 'btn-available': remainingPlaces(c) > 0, 'btn-full': remainingPlaces(c) === 0, 'btn-low': remainingPlaces(c) > 0 && remainingPlaces(c) <= 10 }"
-          >S'inscrire</button>
         </article>
       }
     </div>
+  }
+
+  @if (selectedConference) {
+    <app-conference-details
+      [conference]="selectedConference"
+      (registered)="register($event)"
+    />
   }
 </section>

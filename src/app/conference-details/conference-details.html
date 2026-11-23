@@ -1,0 +1,23 @@
+<section class="details">
+  <h2>{{ conference().title | uppercase }}</h2>
+  <p>{{ conference().description }}</p>
+  <p>📅 {{ conference().date | date: 'dd MMMM yyyy' }}</p>
+  <p>📍 {{ conference().place }}</p>
+  <p>
+    Participants : {{ conference().nbParticipants }} / {{ conference().maxParticipants }}
+    ({{ remainingPlaces() }} places restantes)
+  </p>
+
+  <button
+    class="btn"
+    [ngClass]="{
+      'btn-available': remainingPlaces() >= 10,
+      'btn-low': remainingPlaces() > 0 && remainingPlaces() < 10,
+      'btn-full': remainingPlaces() === 0
+    }"
+    [disabled]="remainingPlaces() === 0"
+    (click)="onRegister()"
+  >
+    {{ remainingPlaces() === 0 ? 'Complet' : 'S’inscrire' }}
+  </button>
+</section>
